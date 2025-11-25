@@ -10,19 +10,27 @@
 </head>
 
 <body class="flex flex-col min-h-screen bg-[#F5F3EF]">
+
     <!-- HEADER FIXE -->
-    <header class="fixed top-0 left-0 w-full z-50 bg-[#F5F3EF]">
-        <nav class="grid grid-cols-4 items-center overflow-auto gap-4 p-4 nav-font">
-            <div class="logo">
-                <img src="images/logoTomTroc.png" alt="Tom Troc">
+    <header class="fixed top-0 left-0 w-full z-50 bg-[#F5F3EF] shadow-md">
+        <nav class="grid grid-cols-3 items-center px-4 md:px-10 py-3 nav-font">
+
+            <!-- Logo -->
+            <div class="flex justify-center flex-shrink-0">
+                <img src="images/logoTomTroc.png" alt="Tom Troc" class="h-10 md:h-12">
             </div>
-            <div class="navleft flex gap-8 col-span-2">
+
+            <!-- Liens du centre -->
+            <div class="hidden md:flex flex justify-start gap-8 text-gray-700 font-medium">
                 <a class="hover:opacity-50" href="index.php">Accueil</a>
                 <a class="hover:opacity-50" href="index.php?action=apropos">Nos livres à l'échange</a>
             </div>
-            <div class="navright flex gap-8">
+
+            <!-- Liens à droite -->
+            <div class="hidden md:flex gap-8 text-gray-700 font-medium">
                 <a class="hover:opacity-50" href="index.php?action=user">Messagerie</a>
                 <a class="hover:opacity-50" href="index.php?action=user">Mon compte</a>
+
                 <?php
                 if (isset($_SESSION['user'])) {
                     echo '<a class="hover:opacity-50" href="index.php?action=disconnectUser">Déconnexion</a>';
@@ -31,21 +39,26 @@
                 }
                 ?>
             </div>
+
+            <!-- Burger menu mobile -->
+            <div class="md:hidden flex col-span-2 items-center justify-end">
+                <button class="text-gray-500 text-3xl">☰</button>
+            </div>
+
         </nav>
     </header>
 
-    <!-- CONTENU QUI S'ADAPTE À L'ÉCRAN -->
-    <!-- pt-[80px] = laisse la place pour le header fixe (à ajuster si besoin) -->
-    <main class="flex-1 pt-[80px]">
+    <!-- CONTENU -->
+    <main class="flex-1 pt-[90px] px-4 md:px-10 lg:px-20">
         <?= $content ?>
     </main>
 
-    <!-- FOOTER FIXE -->
-    <footer class="bottom-0 left-0 w-full h-[61px] flex bg-white items-center gap-8 justify-end nav-font z-50">
+    <!-- FOOTER (non fixe = meilleure version responsive) -->
+    <footer class="w-full h-auto py-4 bg-white flex flex-wrap items-center gap-4 justify-center md:justify-end px-4 md:px-10 nav-font text-gray-700">
         <a class="hover:opacity-50" href="index.php">Politique de confidentialité</a>
         <a class="hover:opacity-50" href="index.php?action=apropos">Mentions légales</a>
         <p>Tom Troc©</p>
-        <img class="h-[30px] mr-8" src="images/logoFooter.png" alt="Logo footer">
+        <img class="h-[30px]" src="images/logoFooter.png" alt="Logo footer">
     </footer>
 
 </body>

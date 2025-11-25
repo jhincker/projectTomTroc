@@ -106,8 +106,8 @@ class BookController
         $bookManager = new BookManager();
         $bookManager->addOrUpdateBook($book);
 
-        // On redirige vers la page user.
-        Utils::redirect("user");
+        // On redirige vers la page myAccount.
+        Utils::redirect("myAccount");
     }
 
 
