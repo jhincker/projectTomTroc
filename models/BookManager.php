@@ -77,6 +77,8 @@ class BookManager extends AbstractEntityManager
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
             'content' => $book->getContent(),
+            'availabilty' => $book->getAvailability(),
+            'picture' => $book->getPicture(),
             'creation_date' => $book->getCreationDate()
         ]);
     }
