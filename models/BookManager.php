@@ -71,15 +71,14 @@ class BookManager extends AbstractEntityManager
      */
     public function addBook(Book $book): void
     {
-        $sql = "INSERT INTO book (id_user, title, author, content, creation_date, date_update) VALUES (:id_user, :title, :author, :content, :creation_date, NOW())";
+        $sql = "INSERT INTO book (id_user, title, author, content, availability, picture, creation_date, date_update) VALUES (:id_user, :title, :author, :content, :availability, :picture, NOW(), NOW())";
         $this->db->query($sql, [
             'id_user' => $book->getIdUser(),
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
             'content' => $book->getContent(),
-            'availabilty' => $book->getAvailability(),
+            'availability' => $book->getAvailability(),
             'picture' => $book->getPicture(),
-            'creation_date' => $book->getCreationDate()
         ]);
     }
 
@@ -90,12 +89,15 @@ class BookManager extends AbstractEntityManager
      */
     public function updateBook(Book $book): void
     {
-        $sql = "UPDATE book SET id_user = :id_user, title = :title, author = :author, content = :content, date_update = NOW() WHERE id = :id";
+        $sql = "UPDATE book SET id_user = :id_user, title = :title, author = :author, content = :content, availability = :availability, picture = :picture, date_update = NOW() WHERE id = :id";
         $this->db->query($sql, [
+            'id' => $book->getId(),
             'id_user' => $book->getIdUser(),
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
-            'content' => $book->getContent()
+            'content' => $book->getContent(),
+            'availability' => $book->getAvailability(),
+            'picture' => $book->getPicture()
         ]);
     }
 

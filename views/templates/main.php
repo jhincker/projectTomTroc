@@ -28,8 +28,8 @@
 
             <!-- Liens à droite -->
             <div class="hidden md:flex gap-8 text-gray-700 font-medium">
-                <a class="hover:opacity-50" href="index.php?action=user">Messagerie</a>
-                <a class="hover:opacity-50" href="index.php?action=user">Mon compte</a>
+                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=user"><img src="images/iconMessaging.svg" alt="Icône Messagerie">Messagerie</a>
+                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=user"><img src="images/iconMyAccount.svg" alt="Icône Mon Compte">Mon compte</a>
 
                 <?php
                 if (isset($_SESSION['user'])) {
@@ -53,7 +53,7 @@
         <?= $content ?>
     </main>
 
-    <!-- FOOTER (non fixe = meilleure version responsive) -->
+    <!-- FOOTER NON FIXE -->
     <footer class="w-full h-auto py-4 bg-white flex flex-wrap items-center gap-4 justify-center md:justify-end px-4 md:px-10 nav-font text-gray-700">
         <a class="hover:opacity-50" href="index.php">Politique de confidentialité</a>
         <a class="hover:opacity-50" href="index.php?action=apropos">Mentions légales</a>
