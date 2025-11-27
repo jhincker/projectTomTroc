@@ -67,8 +67,8 @@ class BookController
             $book = new Book();
         }
 
-        // On affiche la page de modification de l'book.
-        $view = new View("Modifier les informations d'un livre");
+        // On affiche la page de modification du livre.
+        $view = new View("Ajouter ou modifier les informations du livre");
         $view->render("bookDetails", [
             'book' => $book
         ]);
@@ -85,22 +85,32 @@ class BookController
         $userController->checkIfUserIsConnected();
 
         // On récupère les données du formulaire.
-        $id = Utils::request("id", -1);
+        $id = (int)Utils::request("id", -1);
         $title = Utils::request("title");
+        $author = Utils::request("author");
         $content = Utils::request("content");
+        $availability = Utils::request("availability");
+        $file = $_FILES['image'];
 
         // On vérifie que les données sont valides.
-        if (empty($title) || empty($content)) {
-            throw new Exception("Tous les champs sont obligatoires. 2");
+        if (empty($title) || empty($author) || empty($content) || empty($availability)) {
+            throw new Exception("Tous les champs sont obligatoires.");
         }
+        // Récupère le contenu du fichier
+        $picture = file_get_contents($file['tmp_name']);
 
         // On crée l'objet Book.
         $book = new Book([
             'id' => $id, // Si l'id vaut -1, l'book sera ajouté. Sinon, il sera modifié.
             'title' => $title,
+            'author' => $author,
             'content' => $content,
+            'availability' => $availability,
+            'picture' => $picture,
             'id_user' => $_SESSION['idUser']
         ]);
+
+
 
         // On ajoute l'book.
         $bookManager = new BookManager();

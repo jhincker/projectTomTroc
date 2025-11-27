@@ -10,7 +10,7 @@ class Book extends AbstractEntity
     private string $title = "";
     private string $author = "";
     private string $content = "";
-    private bool $availabity = true;
+    private int $availability = 1;
     private string $picture = "";
     private ?DateTime $creationDate = null;
     private ?DateTime $dateUpdate = null;
@@ -106,9 +106,9 @@ class Book extends AbstractEntity
      * Getter pour la dispo.
      * @return string
      */
-    public function getAvailability(): bool
+    public function getAvailability(): int
     {
-        return $this->availabity;
+        return $this->availability;
     }
 
 
@@ -116,9 +116,9 @@ class Book extends AbstractEntity
      * Setter pour la dispo.
      * @param string $picture
      */
-    public function setAvailabilty(bool $availabity): void
+    public function setAvailability(int $availability): void
     {
-        $this->availabity = $availabity;
+        $this->availability = $availability;
     }
 
     /**
@@ -142,19 +142,19 @@ class Book extends AbstractEntity
 
 
 
-    /**
-     * Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
-     * @param string|DateTime $creationDate
-     * @param string $format : le format pour la convertion de la date si elle est une string.
-     * Par défaut, c'est le format de date mysql qui est utilisé. 
-     */
-    public function setCreationDate(string|DateTime $creationDate, string $format = 'Y-m-d H:i:s'): void
-    {
-        if (is_string($creationDate)) {
-            $creationDate = DateTime::createFromFormat($format, $creationDate);
-        }
-        $this->creationDate = $creationDate;
-    }
+    // /**
+    //  * Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
+    //  * @param string|DateTime $creationDate
+    //  * @param string $format : le format pour la convertion de la date si elle est une string.
+    //  * Par défaut, c'est le format de date mysql qui est utilisé. 
+    //  */
+    // public function setCreationDate(string|DateTime $creationDate, string $format = 'Y-m-d H:i:s'): void
+    // {
+    //     if (is_string($creationDate)) {
+    //         $creationDate = DateTime::createFromFormat($format, $creationDate);
+    //     }
+    //     $this->creationDate = $creationDate;
+    // }
 
     /**
      * Getter pour la date de création.
