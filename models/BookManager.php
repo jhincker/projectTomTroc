@@ -21,6 +21,22 @@ class BookManager extends AbstractEntityManager
         return $books;
     }
 
+    /**
+     * Récupère tous les livres en fonction des users.
+     * @return array : un tableau d'objets Book.
+     */
+    public function getAllBooksByUserId(int $userId): array
+    {
+        $sql = "SELECT * FROM book WHERE id_user = :id_user";
+        $result = $this->db->query($sql, ['id_user' => $userId]);
+        $books = [];
+
+        while ($book = $result->fetch()) {
+            $books[] = new Book($book);
+        }
+        return $books;
+    }
+
     public function getAllBooksOrdered(string $column, string $sort_order): array
     {
         $sql = "SELECT * FROM book order by " . $column . " " . $sort_order;
@@ -45,6 +61,22 @@ class BookManager extends AbstractEntityManager
         $book = $result->fetch();
         if ($book) {
             return new Book($book);
+        }
+        return null;
+    }
+
+    /**
+     * Récupère tous les livres d'un user.
+     * @param int $id : l'id de le livre.
+     * @return Book|null : un objet Book ou null si le livre n'existe pas.
+     */
+    public function getUserBooks(int $userId): ?Book
+    {
+        $sql = "SELECT * FROM book WHERE id_user = :id_user";
+        $result = $this->db->query($sql, ['id_user' => $userId]);
+        $books = $result->fetch();
+        if ($books) {
+            return new Book($books);
         }
         return null;
     }
@@ -110,5 +142,14 @@ class BookManager extends AbstractEntityManager
     {
         $sql = "DELETE FROM book WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
+    }
+
+
+    public function countBooksByUser(int $userId): int
+    {
+        $sql = "SELECT COUNT(*) FROM book WHERE id_user = :id_user";
+        $result = $this->db->query($sql, ['id_user' => $userId]);
+
+        return (int) $result->fetchColumn();
     }
 }

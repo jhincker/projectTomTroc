@@ -112,6 +112,50 @@ class UserController
     }
 
     /**
+     * Affiche la page mon compte.
+     * @return void
+     */
+    public function displayMyAccount(): void
+    {
+        // Récupération de l'id depuis la session du user.
+        $idUser = $_SESSION['idUser'];
+
+        // s'assurer que l'utilisateur est connecté
+        $this->checkIfUserIsConnected();
+
+        $bookManager = new BookManager();
+        $books = $bookManager->getAllBooksByUserId($idUser);
+
+        if (!$books) {
+            throw new Exception("Le livre demandé n'existe pas.");
+        }
+
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($idUser);
+        // RÉCUPERER LA DATE ET LA CHANGER EN ANNÉE
+        $creationDate = $user->getCreationDate();
+        $year = $creationDate->diff(new DateTime)->y;
+        // COMPTER LES LIVRES
+        $bookCount = $bookManager->countBooksByUser($user->getId());
+        //RÉCUPERER LA PHOTO D'IDENTITÉ
+        $userPicture = null;
+
+        if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['image'];
+            $userPicture = file_get_contents($file['tmp_name']);
+        }
+
+        $view = new View("Mon compte");
+        $view->render("myAccount", [
+            'books' => $books,
+            'user' => $user,
+            'year' => $year,
+            'bookCount' => $bookCount,
+            'userPicture' => $userPicture,
+        ]);
+    }
+
+    /**
      * Déconnexion de l'utilisateur.
      * @return void
      */

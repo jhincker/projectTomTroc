@@ -17,34 +17,34 @@ $action = Utils::request('action', 'home');
 // Try catch global pour gérer les erreurs
 try {
     // Pour chaque action, on appelle le bon contrôleur et la bonne méthode.
-    switch (strtolower($action)) {
-        // Pages accessibles à tous.
+    switch ($action) {
+        // Pages.
         case 'home':
             $bookController = new BookController();
             $bookController->showHome();
             break;
 
-        case 'showbook':
+        case 'showBook':
             $bookController = new BookController();
             $bookController->showBook();
             break;
 
-        case 'addbook':
+        case 'addBook':
             $bookController = new BookController();
             $bookController->addBook();
             break;
 
-        case 'showupdatebookform':
+        case 'showUpdateBookForm':
             $bookController = new BookController();
             $bookController->showUpdateBookForm();
             break;
 
-        case 'updatebook':
+        case 'updateBook':
             $bookController = new BookController();
             $bookController->updateBook();
             break;
 
-        case 'deletebook':
+        case 'deleteBook':
             $bookController = new BookController();
             $bookController->deleteBook();
             break;
@@ -52,32 +52,37 @@ try {
 
         // Section connexion
 
-        case 'connectionform':
+        case 'connectionForm':
             $userController = new UserController();
             $userController->displayConnectionForm();
             break;
 
-        case 'signupform':
+        case 'signUpForm':
             $userController = new UserController();
             $userController->displaySignUpForm();
             break;
 
-        case 'signupuser':
+        case 'signUpUser':
             $userController = new UserController();
             $userController->signUpUser();
             break;
 
-        case 'connectuser':
+        case 'myAccount':
+            $userController = new UserController();
+            $userController->displayMyAccount();
+            break;
+
+        case 'connectUser':
             $userController = new UserController();
             $userController->connectUser();
             break;
 
-        case 'disconnectuser':
+        case 'disconnectUser':
             $userController = new UserController();
             $userController->disconnectUser();
             break;
 
-        case 'deleteuser':
+        case 'deleteUser':
             $userController = new UserController();
             $userController->deleteUser();
             break;
