@@ -31,10 +31,10 @@ class BookController
         }
 
         $userManager = new UserManager();
-        $users = $userManager->getUserById($book->getIdUser());
+        $user = $userManager->getUserById($book->getIdUser());
 
         $view = new View($book->getTitle());
-        $view->render("bookDetails", ['book' => $book, 'user' => $users]);
+        $view->render("bookDetails", ['book' => $book, 'user' => $user]);
     }
 
     /**
@@ -137,6 +137,6 @@ class BookController
         $bookManager->deleteBook($id);
 
         // On redirige vers la page d'useristration.
-        Utils::redirect("user");
+        Utils::redirect("myAccount");
     }
 }

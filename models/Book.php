@@ -142,26 +142,25 @@ class Book extends AbstractEntity
 
 
 
-    // /**
-    //  * Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
-    //  * @param string|DateTime $creationDate
-    //  * @param string $format : le format pour la convertion de la date si elle est une string.
-    //  * Par défaut, c'est le format de date mysql qui est utilisé. 
-    //  */
-    // public function setCreationDate(string|DateTime $creationDate, string $format = 'Y-m-d H:i:s'): void
-    // {
-    //     if (is_string($creationDate)) {
-    //         $creationDate = DateTime::createFromFormat($format, $creationDate);
-    //     }
-    //     $this->creationDate = $creationDate;
-    // }
+    /* Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
+     * @param string|DateTime $creationDate
+     * @param string $format : le format pour la convertion de la date si elle est une string.
+     * Par défaut, c'est le format de date mysql qui est utilisé. 
+     */
+    public function setCreationDate(string|DateTime $creationDate, string $format = 'Y-m-d H:i:s'): void
+    {
+        if (is_string($creationDate)) {
+            $creationDate = DateTime::createFromFormat($format, $creationDate);
+        }
+        $this->creationDate = $creationDate;
+    }
 
     /**
      * Getter pour la date de création.
      * Grâce au setter, on a la garantie de récupérer un objet DateTime.
      * @return DateTime
      */
-    public function getCreationDate(): DateTime
+    public function getCreationDate(): ?DateTime
     {
         return $this->creationDate;
     }

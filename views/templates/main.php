@@ -28,8 +28,8 @@
 
             <!-- Liens à droite -->
             <div class="hidden md:flex gap-8 text-gray-700 font-medium">
-                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=user"><img src="images/iconMessaging.svg" alt="Icône Messagerie">Messagerie</a>
-                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=user"><img src="images/iconMyAccount.svg" alt="Icône Mon Compte">Mon compte</a>
+                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=myAccount"><img src="images/iconMessaging.svg" alt="Icône Messagerie">Messagerie</a>
+                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=myAccount"><img src="images/iconMyAccount.svg" alt="Icône Mon Compte">Mon compte</a>
 
                 <?php
                 if (isset($_SESSION['user'])) {
@@ -49,7 +49,7 @@
     </header>
 
     <!-- CONTENU -->
-    <main class="flex-1 pt-[90px] px-4 md:px-10 lg:px-20">
+    <main class="flex-1 pt-[72px]">
         <?= $content ?>
     </main>
 
