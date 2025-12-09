@@ -8,8 +8,10 @@
 <div class="pb-20 bg-[#FAF9F7] px-6 md:px-12 lg:px-20">
 
     <div class="mr-32 ml-32">
-        <!-- Bouton retour -->
-        <button class="back-button pt-12 pb-4 text-gray-500">← retour</button>
+        <button onclick="history.back()"
+            class="back-button pt-12 pb-4 text-gray-500">
+            ← retour
+        </button>
         <!-- Titre -->
         <?php if (empty($book->getTitle())): ?>
             <h2 class="font-serif text-2xl md:text-3xl text-gray-800">Ajouter un livre</h2>

@@ -39,6 +39,11 @@ try {
             $bookController->showUpdateBookForm();
             break;
 
+        case 'showOurBooks':
+            $bookController = new BookController();
+            $bookController->showOurBooks();
+            break;
+
         case 'updateBook':
             $bookController = new BookController();
             $bookController->updateBook();
@@ -49,6 +54,15 @@ try {
             $bookController->deleteBook();
             break;
 
+        case 'messaging':
+            $messageController = new MessageController();
+            $messageController->displayMyMessages();
+            break;
+
+        case 'sendMessage':
+            $messageController = new MessageController();
+            $messageController->sendMessage();
+            break;
 
         // Section connexion
 

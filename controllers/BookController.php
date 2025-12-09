@@ -75,6 +75,34 @@ class BookController
     }
 
     /**
+     * Affichage de la vue Nos livres à l'échange.
+     * @return void
+     */
+    public function showOurBooks(): void
+    {
+        // Récupération de l'id de le livre demandé.
+        $title = Utils::request("title", '');
+
+        $bookManager = new BookManager();
+        $userManager = new UserManager();
+        $users = $userManager->getAllUsers();
+        $usernames = [];
+
+        foreach ($users as $user) {
+            $usernames[$user->getId()] = $user->getUsername();
+        }
+
+        if (empty($title)) {
+            $books = $bookManager->getAllBooks();
+        } else {
+            $books = $bookManager->searchBooksByTitle($title);
+        }
+
+        $view = new View('ourBooks');
+        $view->render("ourBooks", ['books' => $books, 'usernames' => $usernames]);
+    }
+
+    /**
      * Ajout et modification d'un book. 
      * On sait si un book est ajouté car l'id vaut -1.
      * @return void

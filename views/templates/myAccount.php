@@ -56,7 +56,7 @@
             <div id="personal-info" class="bg-white mt-6 p-6 rounded-lg shadow-md">
                 <!-- FORMULAIRE -->
                 <div class="flex items-center justify-center">
-                    <form action="index.php?action=connectUser" method="post"
+                    <form action="index.php?action=displayMyAccount" method="post"
                         class="w-full max-w-md bg-white p-8 space-y-6">
 
                         <h2 class="text-md text-gray-800">Vos informations personnelles</h2>
@@ -69,6 +69,7 @@
                                 type="text"
                                 name="email"
                                 id="email"
+                                value="<?= $user->getEmail(); ?>"
                                 required>
 
                             <label class="opacity-70" for="password">Mot de passe</label>
@@ -77,6 +78,7 @@
                                 type="password"
                                 name="password"
                                 id="password"
+                                value="<?= $user->getPassword(); ?>"
                                 required>
 
                             <label class="opacity-70" for="username">Pseudo</label>
@@ -85,6 +87,7 @@
                                 type="text"
                                 name="username"
                                 id="username"
+                                value="<?= $user->getUsername(); ?>"
                                 required>
 
                             <button type="submit" class="text-[#00AC66] bg-[#F5F3EF] border border-[#00AC66] w-[150px] rounded-md py-3 hover:opacity-80">
@@ -132,7 +135,7 @@
                                                                                     echo '<span class="text-white rounded-xl bg-red-500 pt-1 pb-1 pr-2 pl-2">non dispo.</span>';
                                                                                 }
                                                                                 ?></td>
-                                    <td class="px-6 py-4" id="col action"><a class="underline mr-1" href="index.php?action=showUpdateBookForm&id=<?php $book->getId() ?>">Editer</a><a class="text-red-500 underline ml-1" href="index.php?action=displayMyAccount&id=<?php $book->getId() ?>">Supprimer</a></td>
+                                    <td class="px-6 py-4" id="col action"><a class="underline mr-1" href="index.php?action=showUpdateBookForm&id=<?= $book->getId(); ?>">Éditer</a><a class="text-red-500 underline ml-1" href="index.php?action=deleteBook&id=<?php $book->getId() ?>">Supprimer</a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

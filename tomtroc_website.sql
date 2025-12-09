@@ -42,10 +42,10 @@ CREATE TABLE `book` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messaging`
+-- Table structure for table `message`
 --
 
-CREATE TABLE `messaging` (
+CREATE TABLE `message` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `message` text NOT NULL,
@@ -85,9 +85,9 @@ ALTER TABLE `book`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `messaging`
+-- Indexes for table `message`
 --
-ALTER TABLE `messaging`
+ALTER TABLE `message`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -107,9 +107,9 @@ ALTER TABLE `book`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `messaging`
+-- AUTO_INCREMENT for table `message`
 --
-ALTER TABLE `messaging`
+ALTER TABLE `message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
