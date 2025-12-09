@@ -80,4 +80,20 @@ class UserManager extends AbstractEntityManager
         $sql = "DELETE FROM user WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
     }
+
+    /**
+     * Récupère tous les livres.
+     * @return array : un tableau d'objets Book.
+     */
+    public function getAllUsers(): array
+    {
+        $sql = "SELECT * FROM user";
+        $result = $this->db->query($sql);
+        $users = [];
+
+        while ($user = $result->fetch()) {
+            $users[] = new User($user);
+        }
+        return $users;
+    }
 }

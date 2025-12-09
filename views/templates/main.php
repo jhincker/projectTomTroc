@@ -23,21 +23,42 @@
             <!-- Liens du centre -->
             <div class="hidden md:flex flex justify-start gap-8 text-gray-700 font-medium">
                 <a class="hover:opacity-50" href="index.php">Accueil</a>
-                <a class="hover:opacity-50" href="index.php?action=apropos">Nos livres à l'échange</a>
+                <a class="hover:opacity-50" href="index.php?action=showOurBooks">Nos livres à l'échange</a>
             </div>
 
             <!-- Liens à droite -->
-            <div class="hidden md:flex gap-8 text-gray-700 font-medium">
-                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=myAccount"><img src="images/iconMessaging.svg" alt="Icône Messagerie">Messagerie</a>
-                <a class="flex flex-row gap-1 hover:opacity-50" href="index.php?action=myAccount"><img src="images/iconMyAccount.svg" alt="Icône Mon Compte">Mon compte</a>
-
-                <?php
-                if (isset($_SESSION['user'])) {
-                    echo '<a class="hover:opacity-50" href="index.php?action=disconnectUser">Déconnexion</a>';
-                } else {
-                    echo '<a class="hover:opacity-50" href="index.php?action=connectionForm">Connexion</a>';
-                }
-                ?>
+            <div class="flex justify-end hidden md:flex gap-8 text-gray-700 font-medium">
+                <?php if (isset($_SESSION['user'])): ?>
+                    <?php
+                    $unreadCount = 0;
+                    try {
+                        if (isset($_SESSION['idUser'])) {
+                            $messageManager = new MessageManager();
+                            $unreadCount = $messageManager->getUnreadMessagesByRecipientId((int)$_SESSION['idUser']);
+                        }
+                    } catch (Throwable $e) {
+                        $unreadCount = 0;
+                    }
+                    ?>
+                    <a class="relative flex items-center gap-2 hover:opacity-50" href="index.php?action=messaging">
+                        <div class="relative">
+                            <img src="images/iconMessaging.svg" alt="Icône Messagerie" class="w-5 h-5">
+                        </div>
+                        Messagerie
+                        <?php if ($unreadCount > 0): ?>
+                            <span class="inline-flex items-center justify-center rounded-md bg-black text-white text-[10px] leading-none px-1 py-0.5 min-w-[9px] h-[18px]">
+                                <?= $unreadCount ?>
+                            </span>
+                        <?php endif; ?>
+                    </a>
+                    <a class="flex items-center gap-2 hover:opacity-50" href="index.php?action=myAccount">
+                        <img src="images/iconMyAccount.svg" alt="Icône Mon Compte" class="w-5 h-5">
+                        Mon compte
+                    </a>
+                    <a class="hover:opacity-50" href="index.php?action=disconnectUser">Déconnexion</a>
+                <?php else: ?>
+                    <a class="hover:opacity-50" href="index.php?action=connectionForm">Connexion</a>
+                <?php endif; ?>
             </div>
 
             <!-- Burger menu mobile -->
