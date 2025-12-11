@@ -66,22 +66,6 @@ class BookManager extends AbstractEntityManager
     }
 
     /**
-     * Récupère tous les livres d'un user.
-     * @param int $id : l'id de le livre.
-     * @return Book|null : un objet Book ou null si le livre n'existe pas.
-     */
-    public function getUserBooks(int $userId): ?Book
-    {
-        $sql = "SELECT * FROM book WHERE id_user = :id_user";
-        $result = $this->db->query($sql, ['id_user' => $userId]);
-        $books = $result->fetch();
-        if ($books) {
-            return new Book($books);
-        }
-        return null;
-    }
-
-    /**
      * Ajoute ou modifie un book.
      * On sait si le livre est un nouvel book car son id sera -1.
      * @param Book $book : le livre à ajouter ou modifier.
@@ -142,6 +126,24 @@ class BookManager extends AbstractEntityManager
     {
         $sql = "DELETE FROM book WHERE id = :id";
         $this->db->query($sql, ['id' => $id]);
+    }
+
+    /**
+     * Récupère les 4 derniers livres en ligne.
+     * @param int $id.
+     * @return void
+     */
+    public function getFourLastBooks(): array
+    {
+        $sql = "SELECT * FROM book ORDER BY creation_date DESC LIMIT 4";
+        $result = $this->db->query($sql);
+
+        $books = [];
+        while ($book = $result->fetch()) {
+            $books[] = new Book($book);
+        }
+
+        return $books;
     }
 
 

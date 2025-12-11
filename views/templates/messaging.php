@@ -78,13 +78,16 @@
             ?>
 
             <div class="flex flex-row items-center gap-2 pt-6">
-                <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
-                    <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover">
-                </div>
+                <a href="index.php?action=myAccount&id=<?= $user->getId(); ?>"
+                    class="duration-200">
+                    <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
+                        <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover">
+                    </div>
 
-                <span class="font-semibold text-gray-800 text-sm">
-                    <?= htmlspecialchars($activeUser->getUsername()) ?>
-                </span>
+                    <span class="font-semibold text-gray-800 text-sm">
+                        <?= htmlspecialchars($activeUser->getUsername()) ?>
+                    </span>
+                </a>
             </div>
 
             <!-- =============================== -->

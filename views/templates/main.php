@@ -22,7 +22,7 @@
 
             <!-- Liens du centre -->
             <div class="hidden md:flex flex justify-start gap-8 text-gray-700 font-medium">
-                <a class="hover:opacity-50" href="index.php">Accueil</a>
+                <a class="hover:opacity-50" href="index.php?action=home">Accueil</a>
                 <a class="hover:opacity-50" href="index.php?action=showOurBooks">Nos livres à l'échange</a>
             </div>
 
