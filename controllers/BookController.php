@@ -9,9 +9,15 @@ class BookController
     public function showHome(): void
     {
         $bookManager = new BookManager();
+
         $books = $bookManager->getAllBooks();
+        $lastBooks = $bookManager->getFourLastBooks();
+
         $view = new View("Accueil");
-        $view->render("home", ['books' => $books]);
+        $view->render("home", [
+            'books' => $books,
+            'lastBooks' => $lastBooks,
+        ]);
     }
 
     /**
@@ -71,6 +77,50 @@ class BookController
         $view = new View("Ajouter ou modifier les informations du livre");
         $view->render("bookDetails", [
             'book' => $book
+        ]);
+    }
+
+    /**
+     * Affichage des infos d'un livre.
+     * @return void
+     */
+    public function showBookInfo(): void
+    {
+        $userController = new UserController();
+        $userController->checkIfUserIsConnected();
+        // On récupère l'id du livre s'il existe.
+        $id = Utils::request("id", -1);
+        // Récupération de l'id depuis la session du user.
+        $idUser = $_SESSION['idUser'];
+
+        // On récupère le livre associé.
+        $bookManager = new BookManager();
+        $book = $bookManager->getBookById($id);
+
+        $userManager = new UserManager();
+        $user = $userManager->getUserById($book->getIdUser());
+
+        //RÉCUPERER LA PHOTO D'IDENTITÉ
+        $userPicture = null;
+
+        $title = Utils::request("title");
+        $author = Utils::request("author");
+        $content = Utils::request("content");
+        $username = Utils::request("username");
+
+
+        // On affiche la page des détails du livre.
+        $view = new View("Voir les informations d'un livre");
+        $view->render("bookInfo", [
+            'id' => $id,
+            'book' => $book,
+            'userPicture' => $userPicture,
+            'user' => $user,
+            'title' => $title,
+            'author' => $author,
+            'content' => $content,
+            'id_user' => $_SESSION['idUser'],
+            'username' => $username,
         ]);
     }
 

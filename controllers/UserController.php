@@ -131,7 +131,14 @@ class UserController
         }
 
         $userManager = new UserManager();
-        $user = $userManager->getUserById($idUser);
+        $profileUser = (isset($_GET['id']) ? (int)$_GET['id'] : 0);
+        $isOwnProfile = ($profileUser === $idUser);
+
+        if ($isOwnProfile || $profileUser == 0) {
+            $user = $userManager->getUserById($idUser);
+        } else {
+            $user = $userManager->getUserById($profileUser);
+        }
         // RÉCUPERER LA DATE ET LA CHANGER EN ANNÉE
         $creationDate = $user->getCreationDate();
         $year = $creationDate->diff(new DateTime)->y;
@@ -139,6 +146,9 @@ class UserController
         $bookCount = $bookManager->countBooksByUser($user->getId());
         //RÉCUPERER LA PHOTO D'IDENTITÉ
         $userPicture = null;
+        // PROFIL PUBLIC/MON COMPTE
+
+
 
         if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $file = $_FILES['image'];
@@ -152,6 +162,7 @@ class UserController
             'year' => $year,
             'bookCount' => $bookCount,
             'userPicture' => $userPicture,
+            'isOwnProfile' => $isOwnProfile,
         ]);
     }
 
