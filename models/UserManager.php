@@ -68,6 +68,15 @@ class UserManager extends AbstractEntityManager
             'password' => $user->getPassword(),
             'user_picture' => $user->getUserPicture(),
         ]);
+        // Récupérer l'id généré par MySQL et l'affecter à l'objet User
+        try {
+            $lastId = (int)$this->db->getPDO()->lastInsertId();
+            if ($lastId > 0) {
+                $user->setId($lastId);
+            }
+        } catch (Exception $e) {
+            // En cas d'échec, on ne bloque pas l'exécution ; l'id restera la valeur par défaut (-1)
+        }
     }
 
     /**
@@ -95,5 +104,37 @@ class UserManager extends AbstractEntityManager
             $users[] = new User($user);
         }
         return $users;
+    }
+
+    /**
+     * Modifie un user.
+     * @param User $user : le user à modifier.
+     * @return void
+     */
+    public function updateUser(User $user): void
+    {
+        $sql = "UPDATE user SET email = :email, password = :password, username = :username, user_picture = :user_picture WHERE id = :id";
+        $this->db->query($sql, [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'username' => $user->getUsername(),
+            'user_picture' => $user->getUserPicture()
+        ]);
+    }
+
+    /**
+     * Ajoute ou modifie un user.
+     * On sait si le livre est un nouvel user car son id sera -1.
+     * @param User $user : le user à ajouter ou modifier.
+     * @return void
+     */
+    public function addOrUpdateUser(User $user): void
+    {
+        if ($user->getId() == -1) {
+            $this->addUser($user);
+        } else {
+            $this->updateUser($user);
+        }
     }
 }

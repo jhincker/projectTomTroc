@@ -105,6 +105,6 @@ class User extends AbstractEntity
      */
     public function setUserPicture(?string $userPicture): void
     {
-        $this->userPicture = $userPicture;
+        $this->userPicture = $userPicture ?? '';
     }
 }

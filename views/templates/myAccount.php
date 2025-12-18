@@ -4,7 +4,6 @@
  * Page mon compte / profil public.
  */
 
-// On détermine si on affiche "mon" compte ou le profil public de quelqu'un d'autre
 $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUser'];
 
 ?>
@@ -25,26 +24,23 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
             <div id="account-profile" class="flex flex-col items-center justify-center gap-4 bg-white mt-6 p-6 rounded-lg shadow-md">
 
                 <!-- PHOTO DE PROFIL -->
-                <div id="account-picture" class="w-32 h-32 max-w-xs rounded-full overflow-hidden shadow">
+                <div id="account-picture" class="w-32 h-32 max-w-xs rounded-full overflow-hidden shadow flex items-center justify-center bg-gray-100">
                     <?php
-                    $imageBase64 = base64_encode($user->getUserPicture());
-                    $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
+                    $userPic = $user->getUserPicture();
+                    if (!empty($userPic)):
+                        $imageBase64 = base64_encode($userPic);
+                        $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
                     ?>
-                    <img src="<?= $imageSrc; ?>" alt="" class="w-full h-full object-cover">
-                </div>
-
-                <!-- INPUT PHOTO UNIQUEMENT SI C'EST MON COMPTE -->
-                <?php if ($isOwnProfile): ?>
-                    <div class="flex pl-32" id="button-modify">
-                        <div class="grid-rows-2">
-                            <label class="block text-md font-medium text-gray-700 mb-2">
-                                Ajouter ou modifier la photo :<br>
-                            </label>
-                            <input type="file" name="image" accept="image/*"
-                                class="underline hover:opacity-50 self-end text-md text-gray-600">
+                        <img src="<?= $imageSrc; ?>" alt="Photo de profil" class="w-full h-full object-cover">
+                    <?php else: ?>
+                        <div class="text-center px-2">
+                            <svg class="mx-auto mb-2 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.6 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <div class="text-sm text-gray-600">Veuillez ajouter votre photo de profil</div>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
 
                 <!-- PSEUDO -->
                 <div id="username" class="text-2xl font-serif">
@@ -64,14 +60,12 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                 }
                 ?>
 
-                <!-- BIBLIOTHEQUE -->
                 <p class="opacity-70">BIBLIOTHÈQUE</p>
                 <div id="listed-books-number" class="flex flex-row text-xl text-gray-700">
                     <img src="images/iconBook.svg" class="pr-2" alt="icône livre">
                     <?= $bookCount ?> livre<?= $bookCount > 1 ? 's' : '' ?>
                 </div>
 
-                <!-- CTA : ajouter un livre (mon compte) / écrire un message (profil public) -->
                 <?php if ($isOwnProfile): ?>
                     <a href="index.php?action=showUpdateBookForm"
                         class="text-black text-center bg-[#F5F3EF] border border-black w-[150px] rounded-md py-3 hover:opacity-80">
@@ -95,8 +89,10 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
 
                     <!-- FORMULAIRE INFOS PERSO (MON COMPTE) -->
                     <div class="flex items-center justify-center">
-                        <form action="index.php?action=displayMyAccount" method="post"
+                        <form action="index.php?action=updateUser" method="post" enctype="multipart/form-data"
                             class="w-full max-w-md bg-white p-8 space-y-6">
+
+                            <input type="hidden" name="id" value="<?= $user->getId(); ?>">
 
                             <h2 class="text-md text-gray-800">Vos informations personnelles</h2>
 
@@ -128,6 +124,10 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                                     id="username"
                                     value="<?= htmlspecialchars($user->getUsername()); ?>"
                                     required>
+
+                                <label class="opacity-70" for="image">Photo de profil</label>
+                                <input type="file" name="image" id="image" accept="image/*"
+                                    class="block text-md text-gray-600">
 
                                 <button type="submit"
                                     class="text-[#00AC66] bg-[#F5F3EF] border border-[#00AC66] w-[150px] rounded-md py-3 hover:opacity-80">

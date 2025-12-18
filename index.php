@@ -106,6 +106,11 @@ try {
             $userController->deleteUser();
             break;
 
+        case 'updateUser':
+            $userController = new UserController();
+            $userController->updateUser();
+            break;
+
         default:
             throw new Exception("La page demandée n'existe pas.");
     }

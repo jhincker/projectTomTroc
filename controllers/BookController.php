@@ -9,6 +9,13 @@ class BookController
     public function showHome(): void
     {
         $bookManager = new BookManager();
+        $userManager = new UserManager();
+        $users = $userManager->getAllUsers();
+        $usernames = [];
+
+        foreach ($users as $user) {
+            $usernames[$user->getId()] = $user->getUsername();
+        }
 
         $books = $bookManager->getAllBooks();
         $lastBooks = $bookManager->getFourLastBooks();
@@ -17,6 +24,7 @@ class BookController
         $view->render("home", [
             'books' => $books,
             'lastBooks' => $lastBooks,
+            'usernames' => $usernames,
         ]);
     }
 
