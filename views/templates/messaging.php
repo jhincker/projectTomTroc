@@ -19,8 +19,21 @@
                 <?php foreach ($threads as $t): ?>
 
                     <?php
-                    $sender = $userManager->getUserById($t->getIdSender());
-                    $avatar = "data:image/jpeg;base64," . base64_encode($sender->getUserPicture());
+                    $senderId = $t->getIdSender();
+                    if ($senderId === null) {
+                        $senderId = $t->getIdRecipient() ?? null;
+                    }
+                    if ($senderId === null) {
+                        continue;
+                    }
+
+                    $sender = $userManager->getUserById((int)$senderId);
+                    if (!$sender) {
+                        continue;
+                    }
+
+                    $senderPic = $sender->getUserPicture();
+                    $avatar = !empty($senderPic) ? "data:image/jpeg;base64," . base64_encode($senderPic) : null;
                     $isActive = ($sender->getId() === $activeRecipient);
                     ?>
 
@@ -30,7 +43,9 @@
 
                             <!-- Avatar du sender -->
                             <div class="w-[50px] aspect-square rounded-full overflow-hidden shadow">
-                                <img src="<?= $avatar ?>" class="w-full h-full object-cover">
+                                <?php if (!empty($avatar)): ?>
+                                    <img src="<?= $avatar ?>" class="w-full h-full object-cover">
+                                <?php endif; ?>
                             </div>
 
                             <div class="flex flex-col w-full">
@@ -73,15 +88,26 @@
 
             <!-- HEADER DU CHAT -->
             <?php
-            $activeUser = $userManager->getUserById($activeRecipient);
-            $activeAvatar = "data:image/jpeg;base64," . base64_encode($activeUser->getUserPicture());
+            // Protéger l'accès à l'utilisateur actif (activeRecipient peut être null)
+            $activeUser = null;
+            if (!empty($activeRecipient)) {
+                $activeUser = $userManager->getUserById((int)$activeRecipient);
+            }
+            // Fallback sur l'utilisateur courant si l'actif est introuvable
+            if (!$activeUser) {
+                $activeUser = $user;
+            }
+            $activePic = $activeUser->getUserPicture();
+            $activeAvatar = !empty($activePic) ? "data:image/jpeg;base64," . base64_encode($activePic) : null;
             ?>
 
             <div class="flex flex-row items-center gap-2 pt-6">
                 <a href="index.php?action=myAccount&id=<?= $user->getId(); ?>"
                     class="duration-200">
                     <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
-                        <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover">
+                        <?php if (!empty($activeAvatar)): ?>
+                            <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover">
+                        <?php endif; ?>
                     </div>
 
                     <span class="font-semibold text-gray-800 text-sm">
@@ -100,7 +126,8 @@
                     <?php
                     $isMine = $msg->getIdSender() === $user->getId();
                     $sender = $isMine ? $user : $userManager->getUserById($msg->getIdSender());
-                    $senderAvatar = "data:image/jpeg;base64," . base64_encode($sender->getUserPicture());
+                    $sPic = $sender->getUserPicture();
+                    $senderAvatar = !empty($sPic) ? "data:image/jpeg;base64," . base64_encode($sPic) : null;
                     ?>
 
                     <div class="flex w-full <?= $isMine ? 'justify-end' : 'justify-start' ?> mb-4">
@@ -119,7 +146,9 @@
                                 <div class="flex items-center gap-2 mb-1">
                                     <!-- Avatar -->
                                     <div class="w-[20px] h-[20px] rounded-full overflow-hidden shadow">
-                                        <img src="<?= $senderAvatar ?>" class="w-full h-full object-cover">
+                                        <?php if (!empty($senderAvatar)): ?>
+                                            <img src="<?= $senderAvatar ?>" class="w-full h-full object-cover">
+                                        <?php endif; ?>
                                     </div>
 
                                     <!-- Date à droite -->
