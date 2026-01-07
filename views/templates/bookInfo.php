@@ -6,11 +6,7 @@
 ?>
 <div class="grid min-h-screen grid-cols-2">
     <div class="relative">
-        <?php
-        $imageBase64 = base64_encode($book->getPicture());
-        $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
-        ?>
-        <img src="<?= $imageSrc; ?>" alt="" class="h-auto w-auto">
+        <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
     </div>
     <div class="flex flex-col justify-center ml-20 items-start gap-2">
         <h2 class="text-2xl font-serif"><?= htmlspecialchars($book->getTitle()); ?></h2>
@@ -23,13 +19,8 @@
             <a href="index.php?action=myAccount&id=<?= $user->getId(); ?>"
                 class="flex items-center gap-2 duration-200">
                 <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
-                    <?php
-                    $imageBase64 = base64_encode($user->getUserPicture());
-                    $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
-                    ?>
-                    <img src="<?= $imageSrc; ?>" alt="" class="w-full h-full object-cover">
+                    <img src="<?= $user->getUserPicture(); ?>" alt="" class="w-full h-full object-cover">
                 </div>
-
                 <span class="font-semibold text-gray-800 text-sm">
                     <?= htmlspecialchars($user->getUsername()) ?>
                 </span>

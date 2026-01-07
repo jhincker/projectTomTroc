@@ -62,7 +62,8 @@ class UserManager extends AbstractEntityManager
     public function addUser(User $user): void
     {
         $sql = "INSERT INTO user (username, email, password, user_picture, creation_date) VALUES (:username, :email, :password, :user_picture, NOW())";
-        $this->db->query($sql, [
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
@@ -113,8 +114,9 @@ class UserManager extends AbstractEntityManager
      */
     public function updateUser(User $user): void
     {
-        $sql = "UPDATE user SET email = :email, password = :password, username = :username, user_picture = :user_picture WHERE id = :id";
-        $this->db->query($sql, [
+        $sql = "UPDATE user SET email = :email, password = :password, username = :username, user_picture = :picture WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'id' => $user->getId(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),

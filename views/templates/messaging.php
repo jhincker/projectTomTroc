@@ -33,8 +33,8 @@
                     }
 
                     $senderPic = $sender->getUserPicture();
-                    $avatar = !empty($senderPic) ? "data:image/jpeg;base64," . base64_encode($senderPic) : null;
-                    $isActive = ($sender->getId() === $activeRecipient);
+                    $avatar = !empty($senderPic) ? htmlspecialchars($senderPic, ENT_QUOTES) : null;
+                    $isActive = ($sender->getId() === $activeRecipientId);
                     ?>
 
                     <a href="index.php?action=messaging&chat=<?= $sender->getId() ?>">
@@ -88,21 +88,21 @@
 
             <!-- HEADER DU CHAT -->
             <?php
-            // Protéger l'accès à l'utilisateur actif (activeRecipient peut être null)
+            // Protéger l'accès à l'utilisateur actif (activeRecipientId peut être null)
             $activeUser = null;
-            if (!empty($activeRecipient)) {
-                $activeUser = $userManager->getUserById((int)$activeRecipient);
+            if (!empty($activeRecipientId)) {
+                $activeUser = $userManager->getUserById((int)$activeRecipientId);
             }
             // Fallback sur l'utilisateur courant si l'actif est introuvable
             if (!$activeUser) {
                 $activeUser = $user;
             }
             $activePic = $activeUser->getUserPicture();
-            $activeAvatar = !empty($activePic) ? "data:image/jpeg;base64," . base64_encode($activePic) : null;
+            $activeAvatar = !empty($activePic) ? htmlspecialchars($activePic, ENT_QUOTES) : null;
             ?>
 
             <div class="flex flex-row items-center gap-2 pt-6">
-                <a href="index.php?action=myAccount&id=<?= $user->getId(); ?>"
+                <a href="index.php?action=myAccount&id=<?= $activeRecipientId; ?>"
                     class="duration-200">
                     <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
                         <?php if (!empty($activeAvatar)): ?>
@@ -127,7 +127,7 @@
                     $isMine = $msg->getIdSender() === $user->getId();
                     $sender = $isMine ? $user : $userManager->getUserById($msg->getIdSender());
                     $sPic = $sender->getUserPicture();
-                    $senderAvatar = !empty($sPic) ? "data:image/jpeg;base64," . base64_encode($sPic) : null;
+                    $senderAvatar = !empty($sPic) ? htmlspecialchars($sPic, ENT_QUOTES) : null;
                     ?>
 
                     <div class="flex w-full <?= $isMine ? 'justify-end' : 'justify-start' ?> mb-4">
@@ -180,7 +180,7 @@
             <form action="index.php?action=sendMessage" method="POST"
                 class="flex items-center gap-3 w-full pr-6 pb-12 pt-2">
 
-                <input type="hidden" name="recipient" value="<?= $activeRecipient ?>">
+                <input type="hidden" name="recipient" value="<?= $activeRecipientId ?>">
 
                 <input
                     type="text"

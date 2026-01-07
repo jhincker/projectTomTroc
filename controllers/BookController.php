@@ -170,41 +170,74 @@ class BookController
         $userController = new UserController();
         $userController->checkIfUserIsConnected();
 
-        // On récupère les données du formulaire.
         $id = (int)Utils::request("id", -1);
         $title = Utils::request("title");
         $author = Utils::request("author");
         $content = Utils::request("content");
         $availability = Utils::request("availability");
-        $file = $_FILES['image'];
+        $file = $_FILES['image'] ?? null;
 
-        // On vérifie que les données sont valides.
-        if (empty($title) || empty($author) || empty($content) || empty($availability)) {
+        if (trim($title) === '' || trim($author) === '' || trim($content) === '' || !in_array($availability, ['0', '1', 0, 1], true)) {
             throw new Exception("Tous les champs sont obligatoires.");
         }
-        // Récupère le contenu du fichier
-        $picture = file_get_contents($file['tmp_name']);
 
-        // On crée l'objet Book.
+        $bookManager = new BookManager();
+        $picturePath = null;
+
+        // 1. Récupère le livre existant si update
+        if ($id !== -1) {
+            $book = $bookManager->getBookById($id);
+            if (!$book) {
+                throw new Exception("Livre introuvable.");
+            }
+            $picturePath = $book->getPicture(); // valeur actuelle
+        }
+
+        // 2. Gère l'upload si fichier fourni
+        if ($file && $file['error'] === UPLOAD_ERR_OK && $file['size'] > 0) {
+            $rootDir = __DIR__ . '/../..';
+            $uploadDir = "/Website_TomTroc/images/books/";
+            if (!is_dir($rootDir . $uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+            if (!in_array($ext, $allowed)) {
+                throw new Exception("Format image non autorisé.");
+            }
+
+            $tmpPath = $_FILES['image']['tmp_name'];
+            $filename = uniqid('book_', true) . '.' . $ext;
+            $targetPath = $uploadDir . $filename;
+
+            if (!move_uploaded_file($tmpPath, $rootDir . $targetPath)) {
+                throw new Exception("Erreur de téléchargement de l'image.");
+            }
+
+            $picturePath = $targetPath; // nouveau chemin
+
+            // Supprimer l'ancienne image si existante
+            if ($book && !empty($book->getPicture()) && file_exists($book->getPicture())) {
+                unlink($book->getPicture());
+            }
+        }
+
+        // 3. Crée l'objet Book avec le chemin
         $book = new Book([
-            'id' => $id, // Si l'id vaut -1, l'book sera ajouté. Sinon, il sera modifié.
-            'title' => $title,
-            'author' => $author,
-            'content' => $content,
+            'id'          => $id,
+            'title'       => $title,
+            'author'      => $author,
+            'content'     => $content,
             'availability' => $availability,
-            'picture' => $picture,
-            'id_user' => $_SESSION['idUser']
+            'picture'     => $picturePath,
+            'id_user'     => $_SESSION['idUser']
         ]);
 
-
-
-        // On ajoute l'book.
-        $bookManager = new BookManager();
         $bookManager->addOrUpdateBook($book);
-
-        // On redirige vers la page myAccount.
         Utils::redirect("myAccount");
     }
+
 
 
     /**

@@ -91,7 +91,8 @@ class MessageManager extends AbstractEntityManager
         $sql = "INSERT INTO message (id_sender, id_recipient, message, is_read, creation_date)
             VALUES (:id_sender, :id_recipient, :message, :is_read, NOW())";
 
-        $this->db->query($sql, [
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'id_sender'    => $message->getIdSender(),
             'id_recipient' => $message->getIdRecipient(),
             'message'      => $message->getMessage(),
@@ -107,7 +108,8 @@ class MessageManager extends AbstractEntityManager
               AND id_recipient = :recipient 
               AND is_read = 0";
 
-        $this->db->query($sql, [
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'sender'    => $senderId,
             'recipient' => $recipientId
         ]);

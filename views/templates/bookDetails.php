@@ -30,15 +30,23 @@
 
                     <p class="text-gray-500 w-[320px] flex justify-start">Photo</p>
 
-                    <!-- Photo du livre -->
+                    <?php
+                    $picturePath = $book->getPicture();
+                    ?>
+
                     <div id="book-cover" class="w-[320px] max-w-xs aspect-square overflow-hidden rounded-lg shadow">
-                        <?php
-                        // Convert BLOB to base64 data URL
-                        $imageBase64 = base64_encode($book->getPicture());
-                        $imageSrc = "data:{image/jpeg};base64,{$imageBase64}";
-                        ?>
-                        <img src="<?php echo $imageSrc; ?>" alt="" class="w-full h-full object-cover">
+                        <?php if (!empty($picturePath)): ?>
+                            <img src="<?php echo htmlspecialchars($picturePath, ENT_QUOTES); ?>"
+                                alt=""
+                                class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <!-- Optionnel: image par défaut -->
+                            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                Aucune image enregistrée
+                            </div>
+                        <?php endif; ?>
                     </div>
+
 
                 </div>
 
@@ -73,12 +81,10 @@
                                 <option value="0" <?php echo $book->getAvailability() === 0 ? "selected" : ""  ?>>Non disponible</option>
                             </select>
 
-                            <div class="flex" id="button-modify">
-                                <div class="grid-rows-2">
-                                    <label class="block text-md font-medium text-gray-700 mb-2">Ajouter ou modifier la photo :<br></label>
-                                    <input type="file" name="image" accept="image/*" required
-                                        class="underline hover:opacity-50 self-end text-md text-gray-600">
-                                </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="image">Photo du livre</label>
+                                <input type="file" name="image" id="image"
+                                    accept="image/*" class="border border-gray-300 p-3 rounded-md w-full">
                             </div>
                             <button type="submit" class="bg-[#00AC66] text-white rounded-md py-3 w-full hover:opacity-80 transition">
                                 Valider

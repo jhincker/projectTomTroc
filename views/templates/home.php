@@ -47,9 +47,7 @@
                         <!-- Image du livre -->
                         <div class="aspect-square bg-gray-200 overflow-hidden">
                             <?php if ($book->getPicture()): ?>
-                                <img src="data:image/jpeg;base64,<?= base64_encode($book->getPicture()); ?>"
-                                    alt="<?= htmlspecialchars($book->getTitle()) ?>"
-                                    class="w-full h-full object-cover">
+                                <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
                             <?php else: ?>
                                 <div class="w-full h-full flex items-center justify-center bg-gray-300">
                                     <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

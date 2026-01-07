@@ -63,7 +63,7 @@ class UserController
 
         // On vérifie que le mot de passe est correct.
         if (!password_verify($password, $user->getPassword())) {
-            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
             throw new Exception("Le mot de passe est incorrect : $hash");
         }
 
@@ -93,8 +93,8 @@ class UserController
         }
 
         // Hasher le mot de passe
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-
+        $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+        // B_Crypt
 
         // On créé l'utilisateur.
         $userManager = new UserManager();
@@ -224,53 +224,72 @@ class UserController
      */
     public function updateUser(): void
     {
-        $userController = new UserController();
-        $userController->checkIfUserIsConnected();
+        $this->checkIfUserIsConnected();  // self call (au lieu de new)
 
-        // On récupère les données du formulaire.
         $id = (int)Utils::request("id", -1);
         $email = Utils::request("email");
         $password = Utils::request("password");
         $username = Utils::request("username");
-        // Protéger l'accès à $_FILES['image']
         $file = $_FILES['image'] ?? null;
 
-        // Instancier le manager tôt pour pouvoir récupérer la photo existante si besoin
-        $userManager = new UserManager();
-
-        // On vérifie que les données sont valides.
         if (empty($email) || empty($password) || empty($username)) {
             throw new Exception("Tous les champs sont obligatoires.");
         }
-        // Récupère le contenu du fichier si un upload a eu lieu, sinon garde l'image existante (si édition)
-        $picture = null;
-        if ($file && isset($file['error']) && $file['error'] === UPLOAD_ERR_OK && !empty($file['tmp_name'])) {
-            $picture = file_get_contents($file['tmp_name']);
-        } else {
-            // si on modifie un user existant, récupérer sa photo actuelle
-            if ($id !== -1) {
-                $existingUser = $userManager->getUserById($id);
-                if ($existingUser) {
-                    $picture = $existingUser->getUserPicture();
-                }
+
+        $userManager = new UserManager();
+        $picturePath = null;
+
+        // 1. Récupère user existant si update (comme BookController)
+        if ($id !== -1) {
+            $existingUser = $userManager->getUserById($id);
+            if (!$existingUser) {
+                throw new Exception("Utilisateur introuvable.");
+            }
+            $picturePath = $existingUser->getUserPicture();
+        }
+
+        // 2. Upload si fichier (exactement comme BookController)
+        if ($file && $file['error'] === UPLOAD_ERR_OK && $file['size'] > 0) {
+            $rootDir = __DIR__ . '/../..';
+            $uploadDir = "/Website_TomTroc/images/";
+            if (!is_dir($rootDir . $uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+            if (!in_array($ext, $allowed)) {
+                throw new Exception("Format image non autorisé.");
+            }
+
+            $tmpPath = $file['tmp_name'];
+            $filename = uniqid('user_', true) . '.' . $ext;
+            $targetPath = $uploadDir . $filename;
+
+            if (!move_uploaded_file($tmpPath, $rootDir . $targetPath)) {
+                throw new Exception("Erreur de téléchargement de l'image.");
+            }
+
+            $picturePath = $targetPath;
+
+            // Supprime ancienne
+            if (isset($existingUser) && !empty($existingUser->getUserPicture()) && file_exists($existingUser->getUserPicture())) {
+                unlink($existingUser->getUserPicture());
             }
         }
 
-        // On crée l'objet Book.
+        // Hash password (conservé)
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+
         $user = new User([
-            'id' => $id, // Si l'id vaut -1, l'book sera ajouté. Sinon, il sera modifié.
-            'email' => $email,
-            'password' => $password,
-            'username' => $username,
-            'user_picture' => $picture,
+            'id'            => $id,
+            'email'         => $email,
+            'password'      => $hashedPassword,
+            'username'      => $username,
+            'user_picture'  => $picturePath,  // chemin string
         ]);
 
-
-
-        // On ajoute ou met à jour le user.
         $userManager->addOrUpdateUser($user);
-
-        // On redirige vers la page myAccount.
         Utils::redirect("myAccount");
     }
 }

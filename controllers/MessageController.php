@@ -30,7 +30,7 @@ class MessageController
                 'threads'          => [],
                 'messages'         => [],
                 'user'             => $userManager->getUserById($idUser),
-                'activeRecipient'  => null,
+                'activeRecipientId'  => null,
                 'userManager'      => $userManager
             ]);
             return;
@@ -40,23 +40,23 @@ class MessageController
         // Déterminer la discussion active
 
         // Paramètre GET ?chat=ID
-        $activeRecipient = isset($_GET['chat']) ? (int) $_GET['chat'] : null;
+        $activeRecipientId = isset($_GET['chat']) ? (int) $_GET['chat'] : null;
 
         // Pas de chat sélectionné → prendre le dernier thread automatiquement
-        if ($activeRecipient === null || $activeRecipient === 0) {
-            $activeRecipient = $threads[0]->getIdSender();
+        if ($activeRecipientId === null || $activeRecipientId === 0) {
+            $activeRecipientId = $threads[0]->getIdSender();
         }
 
         // Marquer comme lus tous les messages du sender actif
         $messageManager->markMessagesAsRead(
-            $activeRecipient,  // sender
+            $activeRecipientId,  // sender
             $idUser            // recipient (user connecté)
         );
 
 
         // Récupérer la conversation
-        $messageManager->markMessagesAsRead($activeRecipient, $idUser);
-        $messages = $messageManager->getConversation($idUser, $activeRecipient);
+        $messageManager->markMessagesAsRead($activeRecipientId, $idUser);
+        $messages = $messageManager->getConversation($idUser, $activeRecipientId);
 
         // Calcul des messages non lus
         $unreadCount = $messageManager->getUnreadMessagesByRecipientId($idUser);
@@ -73,7 +73,7 @@ class MessageController
             'threads'          => $threads,
             'messages'         => $messages,
             'user'             => $user,
-            'activeRecipient'  => $activeRecipient,
+            'activeRecipientId'  => $activeRecipientId,
             'userManager'      => $userManager,
             'unreadCount'      => $unreadCount,
         ]);

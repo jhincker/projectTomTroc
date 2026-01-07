@@ -88,7 +88,10 @@ class BookManager extends AbstractEntityManager
     public function addBook(Book $book): void
     {
         $sql = "INSERT INTO book (id_user, title, author, content, availability, picture, creation_date, date_update) VALUES (:id_user, :title, :author, :content, :availability, :picture, NOW(), NOW())";
-        $this->db->query($sql, [
+
+        // ajout insert/update : prepare et execute
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'id_user' => $book->getIdUser(),
             'title' => $book->getTitle(),
             'author' => $book->getAuthor(),
@@ -106,7 +109,8 @@ class BookManager extends AbstractEntityManager
     public function updateBook(Book $book): void
     {
         $sql = "UPDATE book SET id_user = :id_user, title = :title, author = :author, content = :content, availability = :availability, picture = :picture, date_update = NOW() WHERE id = :id";
-        $this->db->query($sql, [
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
             'id' => $book->getId(),
             'id_user' => $book->getIdUser(),
             'title' => $book->getTitle(),

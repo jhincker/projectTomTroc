@@ -65,4 +65,9 @@ class DBManager
         }
         return $query;
     }
+
+    public function prepare(string $sql): PDOStatement
+    {
+        return $this->db->prepare($sql);
+    }
 }

@@ -23,15 +23,16 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
             <!-- =================================== -->
             <div id="account-profile" class="flex flex-col items-center justify-center gap-4 bg-white mt-6 p-6 rounded-lg shadow-md">
 
+                <?php
+                $picturePath = $user->getUserPicture();
+                ?>
+
                 <!-- PHOTO DE PROFIL -->
                 <div id="account-picture" class="w-32 h-32 max-w-xs rounded-full overflow-hidden shadow flex items-center justify-center bg-gray-100">
-                    <?php
-                    $userPic = $user->getUserPicture();
-                    if (!empty($userPic)):
-                        $imageBase64 = base64_encode($userPic);
-                        $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
-                    ?>
-                        <img src="<?= $imageSrc; ?>" alt="Photo de profil" class="w-full h-full object-cover">
+                    <?php if (!empty($picturePath)): ?>
+                        <img src="<?php echo htmlspecialchars($picturePath, ENT_QUOTES); ?>"
+                            alt=""
+                            class="w-full h-full object-cover">
                     <?php else: ?>
                         <div class="text-center px-2">
                             <svg class="mx-auto mb-2 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,11 +157,7 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                                         <tr class="odd:bg-gray-200 even:bg-white">
                                             <td class="px-6 py-4">
                                                 <div class="w-[50px] max-w-xs aspect-square overflow-hidden shadow">
-                                                    <?php
-                                                    $imageBase64 = base64_encode($book->getPicture());
-                                                    $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
-                                                    ?>
-                                                    <img src="<?= $imageSrc; ?>" alt="" class="w-full h-full object-cover">
+                                                    <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4"><?= htmlspecialchars($book->getTitle()); ?></td>
@@ -206,11 +203,7 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                                     <tr class="odd:bg-gray-200 even:bg-white">
                                         <td class="px-6 py-4">
                                             <div class="w-[50px] max-w-xs aspect-square overflow-hidden shadow">
-                                                <?php
-                                                $imageBase64 = base64_encode($book->getPicture());
-                                                $imageSrc = "data:image/jpeg;base64,{$imageBase64}";
-                                                ?>
-                                                <img src="<?= $imageSrc; ?>" alt="" class="w-full h-full object-cover">
+                                                <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
                                             </div>
                                         </td>
                                         <td class="px-6 py-4"><?= htmlspecialchars($book->getTitle()); ?></td>
