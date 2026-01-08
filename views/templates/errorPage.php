@@ -5,7 +5,7 @@
  */
 ?>
 
-<div class="error">
+<div class="error" role="alert" aria-live="assertive">
     <h2>Erreur</h2>
     <p><?= $errorMessage ?></p>
     <a href="index.php?action=home">Retour à la page d'accueil</a>

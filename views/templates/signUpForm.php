@@ -15,12 +15,12 @@
                 <input class="border border-2 hover:border-blue-500 p-1 rounded-md" type="text" name="email" id="email" required>
                 <label for="password">Mot de passe</label>
                 <input class="border border-2 hover:border-blue-500 p-1 rounded-md" type="password" name="password" id="password" required>
-                <button class="submit bg-[#00AC66] text-white rounded-md h-12">S'inscrire</button>
+                <button type="submit" class="submit bg-[#00AC66] text-white rounded-md h-12">S'inscrire</button>
                 <p>Déjà inscrit ? <a class="underline hover:opacity-50" href="index.php?action=connectionForm">Connectez-vous</a></p>
             </div>
         </form>
     </div>
     <div class="relative">
-        <img src="images/connect.jpg" alt="" class="h-auto w-auto">
+        <img src="images/connect.jpg" alt="" aria-hidden="true" class="h-auto w-auto">
     </div>
 </div>

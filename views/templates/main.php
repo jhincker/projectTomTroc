@@ -11,9 +11,12 @@
 
 <body class="flex flex-col min-h-screen bg-[#F5F3EF]">
 
+    <!-- Skip link for keyboard users -->
+    <a href="#main-content" class="skip-link visually-hidden">Aller au contenu</a>
+
     <!-- HEADER FIXE -->
     <header class="fixed top-0 left-0 w-full z-50 bg-[#F5F3EF] shadow-md">
-        <nav class="grid grid-cols-3 items-center px-4 md:px-10 py-3 nav-font">
+        <nav class="grid grid-cols-3 items-center px-4 md:px-10 py-3 nav-font" aria-label="Navigation principale">
 
             <!-- Logo -->
             <div class="flex justify-center flex-shrink-0">
@@ -63,14 +66,14 @@
 
             <!-- Burger menu mobile -->
             <div class="md:hidden flex col-span-2 items-center justify-end">
-                <button class="text-gray-500 text-3xl">☰</button>
+                <button type="button" class="text-gray-500 text-3xl" aria-expanded="false" aria-label="Ouvrir le menu">☰</button>
             </div>
 
         </nav>
     </header>
 
     <!-- CONTENU -->
-    <main class="flex-1 pt-[72px]">
+    <main id="main-content" class="flex-1 pt-[72px]">
         <?= $content ?>
     </main>
 

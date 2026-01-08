@@ -8,8 +8,8 @@
 <div class="pb-20 bg-[#FAF9F7] px-6 md:px-12 lg:px-20">
 
     <div class="mr-32 ml-32">
-        <button onclick="history.back()"
-            class="back-button pt-12 pb-4 text-gray-500">
+        <button type="button" onclick="history.back()"
+            class="back-button pt-12 pb-4 text-gray-500" aria-label="Retourner à la page précédente">
             ← retour
         </button>
         <!-- Titre -->
@@ -37,7 +37,7 @@
                     <div id="book-cover" class="w-[320px] max-w-xs aspect-square overflow-hidden rounded-lg shadow">
                         <?php if (!empty($picturePath)): ?>
                             <img src="<?php echo htmlspecialchars($picturePath, ENT_QUOTES); ?>"
-                                alt=""
+                                alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                                 class="w-full h-full object-cover">
                         <?php else: ?>
                             <!-- Optionnel: image par défaut -->

@@ -31,7 +31,7 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                 <div id="account-picture" class="w-32 h-32 max-w-xs rounded-full overflow-hidden shadow flex items-center justify-center bg-gray-100">
                     <?php if (!empty($picturePath)): ?>
                         <img src="<?php echo htmlspecialchars($picturePath, ENT_QUOTES); ?>"
-                            alt=""
+                            alt="Photo de profil de <?= htmlspecialchars($user->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"
                             class="w-full h-full object-cover">
                     <?php else: ?>
                         <div class="text-center px-2">
@@ -157,7 +157,7 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                                         <tr class="odd:bg-gray-200 even:bg-white">
                                             <td class="px-6 py-4">
                                                 <div class="w-[50px] max-w-xs aspect-square overflow-hidden shadow">
-                                                    <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
+                                                    <img src="<?= $book->getPicture(); ?>" alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4"><?= htmlspecialchars($book->getTitle()); ?></td>
@@ -203,7 +203,7 @@ $isOwnProfile = isset($_SESSION['idUser']) && $user->getId() === $_SESSION['idUs
                                     <tr class="odd:bg-gray-200 even:bg-white">
                                         <td class="px-6 py-4">
                                             <div class="w-[50px] max-w-xs aspect-square overflow-hidden shadow">
-                                                <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
+                                                <img src="<?= $book->getPicture(); ?>" alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
                                             </div>
                                         </td>
                                         <td class="px-6 py-4"><?= htmlspecialchars($book->getTitle()); ?></td>

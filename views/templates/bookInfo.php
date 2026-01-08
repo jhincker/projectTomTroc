@@ -6,7 +6,7 @@
 ?>
 <div class="grid min-h-screen grid-cols-2">
     <div class="relative">
-        <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
+        <img src="<?= $book->getPicture(); ?>" alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
     </div>
     <div class="flex flex-col justify-center ml-20 items-start gap-2">
         <h2 class="text-2xl font-serif"><?= htmlspecialchars($book->getTitle()); ?></h2>
@@ -19,7 +19,7 @@
             <a href="index.php?action=myAccount&id=<?= $user->getId(); ?>"
                 class="flex items-center gap-2 duration-200">
                 <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
-                    <img src="<?= $user->getUserPicture(); ?>" alt="" class="w-full h-full object-cover">
+                    <img src="<?= $user->getUserPicture(); ?>" alt="Photo de <?= htmlspecialchars($user->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
                 </div>
                 <span class="font-semibold text-gray-800 text-sm">
                     <?= htmlspecialchars($user->getUsername()) ?>
@@ -27,7 +27,7 @@
             </a>
         </div>
         <a href="index.php?action=messaging&chat=<?= $user->getId(); ?>"
-            class="text-white bg-[#00AC66] text-center border mt-6 w-[500px] rounded-md py-3 hover:opacity-80">
+            class="text-white bg-[#00AC66] text-center border mt-6 w-[500px] rounded-md py-3 hover:opacity-80" aria-label="Écrire un message à <?= htmlspecialchars($user->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
             Écrire un message
         </a>
     </div>

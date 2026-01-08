@@ -3,19 +3,22 @@
         <div class="" id="h2-ourBooks">
             <h2 class="text-2xl font-serif pl-64">Nos livres à l'échange</h2>
         </div>
-        <form action="index.php" method="GET" class="relative pr-64">
+        <form action="index.php" method="GET" class="relative pr-64" aria-label="Recherche de livres">
 
             <input type="hidden" name="action" value="showOurBooks">
 
+            <label for="search-title" class="visually-hidden">Rechercher un livre</label>
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <img src="images/iconSearch.png" alt="icône searchbar">
+                <img src="images/iconSearch.png" alt="Recherche">
             </span>
 
             <input
+                id="search-title"
                 type="search"
                 name="title"
                 class="w-full border rounded-md pl-10 py-2 text-gray-700 placeholder-gray-400"
-                placeholder="Rechercher un livre">
+                placeholder="Rechercher un livre"
+                aria-label="Rechercher un livre">
         </form>
     </div>
 
@@ -26,7 +29,7 @@
                 <p class="text-gray-500 text-lg">Aucun livre disponible pour le moment.</p>
             </div>
         <?php else: ?>
-            <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-11">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-11">
                 <?php
                 foreach ($books as $book): ?>
                     <div class="book-card bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
@@ -40,10 +43,10 @@
                             <!-- Image du livre -->
                             <div class="aspect-square w-[200px] bg-gray-200 overflow-hidden">
                                 <?php if ($book->getPicture()): ?>
-                                    <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
+                                    <img src="<?= $book->getPicture(); ?>" alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
                                 <?php else: ?>
                                     <div class="w-full h-full flex items-center justify-center bg-gray-300">
-                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                         </svg>
                                     </div>

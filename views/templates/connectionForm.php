@@ -32,7 +32,7 @@
                     id="password"
                     required>
 
-                <button
+                <button type="submit"
                     class="bg-[#00AC66] text-white rounded-md py-3 w-full hover:opacity-80 transition">
                     Se connecter
                 </button>
@@ -52,6 +52,7 @@
     <div class="flex items-center justify-center">
         <img src="images/connect.jpg"
             alt=""
+            aria-hidden="true"
             class="w-full max-w-lg rounded-xl shadow object-cover">
     </div>
 </div>

@@ -39,14 +39,14 @@
                     $isActive = ($sender->getId() === $activeRecipientId);
                     ?>
 
-                    <a href="index.php?action=messaging&chat=<?= $sender->getId() ?>">
+                    <a href="index.php?action=messaging&chat=<?= $sender->getId() ?>" aria-label="Ouvrir conversation avec <?= htmlspecialchars($sender->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                         <div class="flex items-center gap-3 p-4 w-full cursor-pointer
                         <?= $isActive ? 'bg-white shadow-sm rounded-md' : 'bg-[#FAF9F7]' ?>">
 
                             <!-- Avatar du sender -->
                             <div class="w-[50px] aspect-square rounded-full overflow-hidden shadow">
                                 <?php if (!empty($avatar)): ?>
-                                    <img src="<?= $avatar ?>" class="w-full h-full object-cover">
+                                    <img src="<?= $avatar ?>" class="w-full h-full object-cover" alt="Avatar de <?= htmlspecialchars($sender->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                                 <?php endif; ?>
                             </div>
 
@@ -108,7 +108,7 @@
                     class="duration-200">
                     <div class="w-[50px] h-[50px] rounded-full overflow-hidden shadow">
                         <?php if (!empty($activeAvatar)): ?>
-                            <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover">
+                            <img src="<?= $activeAvatar ?>" class="w-full h-full object-cover" alt="Photo de <?= htmlspecialchars($activeUser->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                         <?php endif; ?>
                     </div>
 
@@ -149,7 +149,7 @@
                                     <!-- Avatar -->
                                     <div class="w-[20px] h-[20px] rounded-full overflow-hidden shadow">
                                         <?php if (!empty($senderAvatar)): ?>
-                                            <img src="<?= $senderAvatar ?>" class="w-full h-full object-cover">
+                                            <img src="<?= $senderAvatar ?>" class="w-full h-full object-cover" alt="Avatar de <?= htmlspecialchars($sender->getUsername(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
                                         <?php endif; ?>
                                     </div>
 
@@ -184,10 +184,13 @@
 
                 <input type="hidden" name="recipient" value="<?= $activeRecipientId ?>">
 
+                <label for="message-text" class="visually-hidden">Message</label>
                 <input
+                    id="message-text"
                     type="text"
                     name="message"
                     placeholder="Tapez votre message ici"
+                    aria-label="Message"
                     class="flex-1 border border-gray-200 rounded-md px-3 py-2 text-sm
                     focus:ring-2 focus:ring-[#00AC66] focus:outline-none bg-white">
 

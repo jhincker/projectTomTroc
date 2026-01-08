@@ -24,7 +24,7 @@
             <!-- =================================== -->
             <div id="personal-info" class="flex flex-col items-end mr-48">
 
-                <img class="w-[404px] h-[539px]" src="images/frontBookStore.jpg" alt="bookstore">
+                <img class="w-[404px] h-[539px]" src="images/frontBookStore.jpg" alt="Photo d'une librairie">
                 <p class="opacity-40 text-sm italic">Hamza
                 <p>
             </div>
@@ -32,7 +32,7 @@
     </div>
     <div class="bg-[#FAF9F7] pt-20 pb-20 flex flex-col items-center justify-center">
         <h3 class="font-serif text-2xl pb-16">Les derniers livres ajoutés</h3>
-        <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pb-8">
             <?php
             foreach ($lastBooks as $book): ?>
 
@@ -47,7 +47,7 @@
                         <!-- Image du livre -->
                         <div class="aspect-square bg-gray-200 overflow-hidden">
                             <?php if ($book->getPicture()): ?>
-                                <img src="<?= $book->getPicture(); ?>" alt="" class="w-full h-full object-cover">
+                                <img src="<?= $book->getPicture(); ?>" alt="<?= htmlspecialchars($book->getTitle(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" class="w-full h-full object-cover">
                             <?php else: ?>
                                 <div class="w-full h-full flex items-center justify-center bg-gray-300">
                                     <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@
     <div class="pt-20 pb-20 flex flex-col items-center justify-center">
         <h3 class="font-serif text-2xl pb-6">Comment ça marche ?</h3>
         <p class="text-md opacity-50 text-wrap w-[400px]">Échanger des livres avec TomTroc c’est simple et amusant ! Suivez ces étapes pour commencer :</p>
-        <div id="books-container" class="flex items-center justify-center gap-8 pb-8 mt-8">
+        <div class="flex items-center justify-center gap-8 pb-8 mt-8">
 
             <div class="p-6 flex items-center justify-center w-[215px] h-[139px] bg-white text-sm text-wrap">
                 <p>Inscrivez-vous gratuitement sur notre plateforme.</p>
@@ -102,7 +102,7 @@
             Voir tous les livres</a>
     </div>
     <div>
-        <img src="images/banner.png" alt="library">
+        <img src="images/banner.png" alt="bibliothèque">
     </div>
     <div class="flex flex-col items-center justify-center pt-20">
         <h3 class="font-serif text-2xl pb-6 text-left w-[350px]">Nos valeurs</h3>
