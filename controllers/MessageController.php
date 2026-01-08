@@ -44,7 +44,7 @@ class MessageController
 
         // Pas de chat sélectionné → prendre le dernier thread automatiquement
         if ($activeRecipientId === null || $activeRecipientId === 0) {
-            $activeRecipientId = $threads[0]->getIdSender();
+            $activeRecipientId = $threads[0]->getIdRecipient();
         }
 
         // Marquer comme lus tous les messages du sender actif

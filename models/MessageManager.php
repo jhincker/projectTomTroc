@@ -37,22 +37,29 @@ class MessageManager extends AbstractEntityManager
         return (int) $result->fetchColumn();
     }
 
-    public function getLastMessagesByRecipient(int $idRecipient): array
+    public function getLastMessagesByRecipient(int $id_user): array
     {
         $sql = "
         SELECT m.*
         FROM message m
         INNER JOIN (
-            SELECT id_sender, MAX(creation_date) AS last_date
+            SELECT 
+                LEAST(id_sender, id_recipient) AS user1,
+                GREATEST(id_sender, id_recipient) AS user2,
+                MAX(creation_date) AS last_date
             FROM message
-            WHERE id_recipient = :id_recipient
-            GROUP BY id_sender
+            WHERE id_sender = :id_user OR id_recipient = :id_user
+            GROUP BY 
+                LEAST(id_sender, id_recipient),
+                GREATEST(id_sender, id_recipient)
         ) t
-        ON m.id_sender = t.id_sender AND m.creation_date = t.last_date
-        ORDER BY m.creation_date DESC
+        ON LEAST(m.id_sender, m.id_recipient) = t.user1
+        AND GREATEST(m.id_sender, m.id_recipient) = t.user2
+        AND m.creation_date = t.last_date
+        ORDER BY m.creation_date DESC;
     ";
 
-        $result = $this->db->query($sql, ['id_recipient' => $idRecipient]);
+        $result = $this->db->query($sql, ['id_user' => $id_user]);
         $threads = [];
 
         while ($msg = $result->fetch()) {

@@ -127,7 +127,7 @@ class BookController
             'title' => $title,
             'author' => $author,
             'content' => $content,
-            'id_user' => $_SESSION['idUser'],
+            'id_user' => $idUser,
             'username' => $username,
         ]);
     }

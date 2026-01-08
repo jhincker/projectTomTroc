@@ -19,12 +19,14 @@
                 <?php foreach ($threads as $t): ?>
 
                     <?php
-                    $senderId = $t->getIdSender();
-                    if ($senderId === null) {
-                        $senderId = $t->getIdRecipient() ?? null;
-                    }
+                    $senderId = $t->getIdRecipient();
+
                     if ($senderId === null) {
                         continue;
+                    }
+
+                    if ($senderId === $user->getId()) {
+                        $senderId = $t->getIdSender() ?? null;
                     }
 
                     $sender = $userManager->getUserById((int)$senderId);

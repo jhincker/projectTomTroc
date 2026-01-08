@@ -56,8 +56,6 @@ http://localhost/phpmyadmin
 ```sql
 CREATE DATABASE tomtroc_website CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-Décompressez tomtroc_website.sql.zip pour accèder au fichier de la base de données.
-
 Importer la structure SQL :
 
 Importez le fichier SQL fourni avec le projet : tomtroc_website.sql

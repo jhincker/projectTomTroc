@@ -63,8 +63,17 @@ class UserController
 
         // On vérifie que le mot de passe est correct.
         if (!password_verify($password, $user->getPassword())) {
-            $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-            throw new Exception("Le mot de passe est incorrect : $hash");
+            // Ne pas divulguer le hash dans les messages d'erreur
+            throw new Exception("Le mot de passe est incorrect.");
+        }
+
+        // Si l'algorithme / le cost change, rehasher le mot de passe et mettre à jour la BDD
+        $rehashOptions = ['cost' => 12];
+        if (password_needs_rehash($user->getPassword(), PASSWORD_BCRYPT, $rehashOptions)) {
+            $newHash = password_hash($password, PASSWORD_BCRYPT, $rehashOptions);
+            $user->setPassword($newHash);
+            // Met à jour l'utilisateur en base (addOrUpdateUser gère insert/update)
+            $userManager->addOrUpdateUser($user);
         }
 
         // On connecte l'utilisateur.
@@ -120,11 +129,10 @@ class UserController
         // s'assurer que l'utilisateur est connecté
         $this->checkIfUserIsConnected();
 
-        // Récupération de l'id depuis la session du user (protéger si absent)
+        // Récupération de l'id depuis la session du user
         $idUser = $_SESSION['idUser'] ?? -1;
 
         $bookManager = new BookManager();
-        $books = $bookManager->getAllBooksByUserId($idUser);
 
         $userManager = new UserManager();
         $profileUser = (isset($_GET['id']) ? (int)$_GET['id'] : 0);
@@ -135,6 +143,8 @@ class UserController
         } else {
             $user = $userManager->getUserById($profileUser);
         }
+
+        $books = $bookManager->getAllBooksByUserId($user->getId());
 
         // Si l'utilisateur n'existe pas, afficher une page d'erreur explicite
         if (!$user) {

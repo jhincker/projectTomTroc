@@ -114,7 +114,7 @@ class UserManager extends AbstractEntityManager
      */
     public function updateUser(User $user): void
     {
-        $sql = "UPDATE user SET email = :email, password = :password, username = :username, user_picture = :picture WHERE id = :id";
+        $sql = "UPDATE user SET email = :email, password = :password, username = :username, user_picture = :user_picture WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             'id' => $user->getId(),
